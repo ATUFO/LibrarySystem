@@ -460,7 +460,7 @@ void user_LendBook()//借书
             {
                 if(userLogin->lendNum >= maxLandBookNum )   //用户最多借10本书
                 {
-                    printf("你不能再借更多的书了 devtres\n");
+                    printf("你不能再借更多的书了\n");
                     getchar();
                     getchar();
                     userMenu();
@@ -731,22 +731,26 @@ void querySomebooks()//模糊查询
 {
     //   查询方式 [0]id [1]书名 [2]作者 [3]出版社 [4]分类 [5]时间
     system("cls");
-    printf("搜索方式：\n [1] ID\n [2] 书名\n [3] 作者\n [4] 出版社\n [5] 分类\n [6] 时间\n\n[0] 返回\n");
+    printf("搜索方式：\n [1] ID\n [2] 书名\n [3] 作者\n [4] 出版社\n [5] 分类\n [6] 时间\n [7] 已借出图书\n\n[0] 返回\n");
     int method ;
     scanf("%d", &method);
 
     getchar();
-    int goal, isSearch = 0, searchedNum = 0;
-    char con[20];
-    printf("输入关键词\n");
-    book *queryHead = (book *)malloc(sizeof(book));
-    queryHead->next = NULL;
+    int goal, isSearch = 0, searchedNum = 0; char con[20];
     if(method == 0)
         isAdmin ? bookAdminMenu() : userMenu();
-    if(method == 1)
+    if(method!=7){
+         printf("输入关键词\n");
+          if(method == 1)
         scanf("%d", &goal);
     else
         scanf("%s", con); //int 和 string两种方式
+    }
+
+
+    book *queryHead = (book *)malloc(sizeof(book));
+    queryHead->next = NULL;
+
 
     book *pre = the_BookLine_Rear->before;
 
@@ -821,6 +825,15 @@ void querySomebooks()//模糊查询
                 t->next = queryHead->next;
                 queryHead->next = t;
             }
+        case 7:
+            if(pre->numAll-pre->numInLibrary>0){
+                isSearch=1;
+                searchedNum++;
+                book *t = (book *)malloc(sizeof(book));
+                *t = *pre;
+                t->next = queryHead->next;
+                queryHead->next = t;
+            }
             break;
         }
         pre = pre->before;
@@ -833,7 +846,7 @@ void querySomebooks()//模糊查询
     else
         printf("没有搜到\n");
     getchar();
-    getchar();
+
     isAdmin ? bookAdminMenu() : userMenu();
 
 }
