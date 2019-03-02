@@ -460,7 +460,7 @@ void user_LendBook()//借书
             {
                 if(userLogin->lendNum >= maxLandBookNum )   //用户最多借10本书
                 {
-                    printf("你不能再借更多的书了\n");
+                    printf("你不能再借更多的书了 \n");
                     getchar();
                     getchar();
                     userMenu();
@@ -469,7 +469,7 @@ void user_LendBook()//借书
                 theUser->lendedBookId[theUser->lendNum++] = id;
 
                 goal->numInLibrary--;
-                printf("《 %s 》成功借出\n", goal->name);
+                printf("《%s》成功借出\n", goal->name);
                 rewriteAll_BookData();
                 rewriteAll_UserData();
                 getchar();
