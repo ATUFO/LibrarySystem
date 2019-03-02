@@ -460,7 +460,7 @@ void user_LendBook()//借书
             {
                 if(userLogin->lendNum >= maxLandBookNum )   //用户最多借10本书
                 {
-                    printf("你不能再借更多的书了 \n");
+                    printf("你不能再借更多的书了 devtres\n");
                     getchar();
                     getchar();
                     userMenu();
