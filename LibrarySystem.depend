@@ -1,0 +1,64 @@
+# depslib dependency file v1.0
+1547276910 source:d:\c\#mygameproject\librarysystem\main.cpp
+	<iostream>
+	<cstdio>
+	<windows.h>
+	<stdlib.h>
+	<stack>
+	<math.h>
+	"book.h"
+	"user.h"
+	"function.h"
+
+1550221982 source:d:\c\#mygameproject\librarysystem\function.cpp
+	<iostream>
+	<cstdio>
+	<windows.h>
+	<stdlib.h>
+	<stack>
+	<math.h>
+	"book.h"
+	"function.h"
+	"user.h"
+
+1547274243 d:\c\#mygameproject\librarysystem\book.h
+
+1547302704 d:\c\#mygameproject\librarysystem\function.h
+	"user.h"
+	"book.h"
+
+1547303489 d:\c\#mygameproject\librarysystem\user.h
+
+1551493322 source:d:\c\#mygameproject\librarysystem\librarysystem\function.cpp
+	<iostream>
+	<cstdio>
+	<windows.h>
+	<stdlib.h>
+	<stack>
+	<math.h>
+	"book.h"
+	"function.h"
+	"user.h"
+	"conf.h"
+
+1551432750 d:\c\#mygameproject\librarysystem\librarysystem\book.h
+
+1551492458 d:\c\#mygameproject\librarysystem\librarysystem\function.h
+	"user.h"
+	"book.h"
+
+1551188507 d:\c\#mygameproject\librarysystem\librarysystem\user.h
+
+1551280180 d:\c\#mygameproject\librarysystem\librarysystem\conf.h
+
+1547276910 source:d:\c\#mygameproject\librarysystem\librarysystem\main.cpp
+	<iostream>
+	<cstdio>
+	<windows.h>
+	<stdlib.h>
+	<stack>
+	<math.h>
+	"book.h"
+	"user.h"
+	"function.h"
+
