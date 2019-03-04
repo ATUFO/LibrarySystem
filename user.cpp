@@ -72,8 +72,13 @@ void user_Query_Some()
 {
     char name[16];
     system("cls");
-    printf("搜索方式：\n [1] 用户名 \n [2] 管理员[Y]/[N] \n [3] 已借书的ID\n [0] 返回\n");
-    int method ;
+    printf("================================================================LibrarySystem Menu=======================================================================================\n");
+    printf("                                                      搜索方式：\n\n");
+    printf("                                                                [1] 用户名\n\n");
+    printf("                                                                [2] 管理员\n\n");
+    printf("                                                                [3] 已借书的ID\n\n");
+    printf("                                                                [0] 返回\n\n");
+    int method;
     scanf("%d", &method);
     if(method == 0)
         userAdminMenu();

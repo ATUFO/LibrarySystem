@@ -23,9 +23,9 @@ void queryAllbooks();//查询所有图书
 void querySomebooks();//模糊查询
 void showBooksList(book *thehead, int searchNum, bool isTheMainLine); //输出书的列表
 book *findBookbyId(int id);//按id寻找图书
-void showBookDetails(book *thebook);//输出数目详细信息
+void showBooksimple(book *pre);//输出数目详细信息
 void freenode_Book(book *thehead);//释放节点，配合模糊搜索
-
+void showBookdetail(book *thebook);
 void rewriteAll_BookData();//同上
 
 #endif // BOOK_H_INCLUDED

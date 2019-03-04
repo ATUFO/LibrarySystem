@@ -12,13 +12,13 @@
 using namespace std;
 //===================初始化===============================================
 FILE *file;//
-char bookfile[]="bookinfo.data";
-char userfile[]="userinfo.data";
-int booksnum=0, id=0 , userSum=0  ;
-int isAdmin=0;
-int itemInPage =20 ;
-int maxLandBookNum=10 ;
-int showlen=18;
+char bookfile[] = "bookinfo.data";
+char userfile[] = "userinfo.data";
+int booksnum = 0, id = 0, userSum = 0  ;
+int isAdmin = 0;
+int itemInPage = 20;
+int maxLandBookNum = 10 ;
+int showlen = 18;
 user * userLogin ;
 book * the_BookLine_Head ;
 book * the_BookLine_Rear ;
@@ -26,7 +26,8 @@ user * the_UserLine_Head;
 user * the_UserLine_Rear ;
 int bookDataBlockSize;
 int userDataBlockSize;
-void init(){
+void init()
+{
 
     userLogin = (user *)malloc(sizeof(user)); //已登陆的用户的地址
     the_BookLine_Head = (book *)malloc(sizeof(book)); //首节点
@@ -43,9 +44,9 @@ void welcome()//欢迎界面
     system("cls");
     isAdmin = 0;
     printf("================================================================LibrarySystem Menu=======================================================================================\n\n");
-    printf("                                                                 [1] 用户登录\n");
-    printf("                                                                 [2] 管理员登录\n");
-    printf("                                                                 [3] 注册\n");
+    printf("\n                                                                 [1] 用户登录\n\n");
+    printf("                                                                 [2] 管理员登录\n\n");
+    printf("                                                                 [3] 注册\n\n");
     int cmd;
     scanf("%d", &cmd);
     char name[16], pwd[16];
@@ -73,7 +74,7 @@ void welcome()//欢迎界面
         break;
     case 2:
         system("cls");
-         printf("================================================================LibrarySystem Menu=======================================================================================\n\n");
+        printf("================================================================LibrarySystem Menu=======================================================================================\n\n");
         printf("输入账号\n");
         scanf("%s", name);
         printf("输入密码\n");

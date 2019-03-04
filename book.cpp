@@ -94,14 +94,10 @@ void addbooks()//添加书
     Sleep(1000);
     bookAdminMenu();
 }
-void user_LendBook()//借书
+void user_LendBook(book *thebook)//借书
 {
-    int id;
-    system("cls");
-    printf("输入要借的书的ID：\n");
-    scanf("%d", &id);
-    getchar();
-    book *goal = findBookbyId(id);
+
+    book *goal =thebook;
 
     if(goal == NULL)
     {
@@ -121,7 +117,11 @@ void user_LendBook()//借书
         }
         else
         {
-            showBookDetails(goal);
+            getchar();
+            printf("==================================================================图书信息===============================================================\n");
+            printf("%-8s%-25s%-25s%-25s%-8s%-13s%-12s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "在馆/总计");
+
+            showBooksimple(goal);
             printf("是否借阅？[Y]/[N]\n");
             char t;
             scanf("%c", &t);
@@ -219,7 +219,7 @@ void deletebooks()//删除图书
     {
         if(pre->next->id == theid)   //找到图书
         {
-            showBookDetails(pre->next);
+            showBooksimple(pre->next);
             printf("确认删除%s？[Y]/[N]\n", pre->next->name);
             char t;
             scanf("%c", &t);
@@ -280,12 +280,36 @@ void deletebooks_Batch()
     bookAdminMenu();
 
 }
-void showBookDetails(book* thebook)//输出书目详细信息
+void showBooksimple(book* pre)//输出书目简略信息
 {
-    printf("==================================================================图书信息==================================================================\n");
-    printf("%-8s%-20s%-16s%-25s%-8s%-13s%-12s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN",  "在馆/总计");
-    printf("%-8d%-20s%-16s%-25s%-8.2f%-13s%-12s%-15s%-d/%d\n", thebook->id, thebook->name, thebook->authou, thebook->press, thebook->price, thebook->time, thebook->classfiy, thebook->ISBN,  thebook->numInLibrary, thebook->numAll);
 
+    char nametem = pre->name[showlen];
+    pre->name[showlen] = '\0';
+    char authortem = pre->name[showlen];
+    pre->authou[showlen] = '\0';
+    char presstem = pre->name[showlen];
+    pre->press[showlen] = '\0';
+    printf("%-8d%-25s%-25s%-25s%-8.2f%-13s%-12s%-15s%-d/%d\n", pre->id, pre->name, pre->authou, pre->press, pre->price, pre->time, pre->classfiy, pre->ISBN, pre->numInLibrary, pre->numAll);
+    pre->name[showlen] = nametem;
+    pre->authou[showlen] = authortem;
+    pre->press[showlen] = presstem;
+}
+void showBookdetail(book *thebook)
+{
+    system("cls");
+ printf("==============================================================书本详细信息============================================================================\n\n");
+ printf("                                                        书名：      《%s》\n\n",thebook->name);
+ printf("                                                        作者：      %s\n\n",thebook->authou);
+ printf("                                                        分类:       %s\n\n",thebook->classfiy);
+ printf("                                                        出版社：    %s\n\n",thebook->press);
+ printf("                                                        出版时间：  %s\n\n",thebook->time);
+ printf("                                                        ISBN:       %s\n\n",thebook->ISBN);
+ printf("                                                        价格：      %.2lf\n\n",thebook->price);
+ printf("                                                        在馆：  %d       馆藏数目：  %d\n",thebook->numInLibrary,thebook->numAll);
+ printf("回车返回\n");
+ getchar();
+ getchar();
+ return ;
 }
 void rewriteAll_BookData()//数据文本重写
 {
@@ -309,7 +333,7 @@ void importbooks()
     getchar();
     printf("导入图书说明:\n");
     printf(" 1.图书入库信息文件(bookimport.prn)通过 Excel 导出。导出方式为 < 带格式文本文件(空格分隔) .prn  >  \n");
-    printf(" 2.数据格式为[书名] [作者] [出版社] [价格] [出版日期] [分类] [入库数目] [ISBN] [位置]\n");
+    printf(" 2.数据格式为[书名] [作者] [出版社] [价格] [出版日期] [分类] [ISBN][入库数目]  \n");
     printf(" 3.将图书信息文件放在程序运行目录下\n");
     printf("\n\n是否导入？[Y]/[N]\n");
     char cmd;
@@ -400,16 +424,16 @@ void querySomebooks()//模糊查询
 {
     //   查询方式 [0]id [1]书名 [2]作者 [3]出版社 [4]分类 [5]时间
     system("cls");
-     printf("================================================================LibrarySystem Menu=======================================================================================\n");
-    printf("                                                      搜索方式：\n");
-    printf("                                                                [1] ID\n");
-    printf("                                                                [2] 书名\n");
-    printf("                                                                [3] 作者\n");
-    printf("                                                                [4] 出版社\n");
-    printf("                                                                [5] 分类\n");
-    printf("                                                                [6] 时间\n");
-    printf("                                                                [7] 已借出图书\n");
-    printf("                                                                [0] 返回\n");
+    printf("================================================================LibrarySystem Menu=======================================================================================\n");
+    printf("                                                      搜索方式：\n\n");
+    printf("                                                                [1] ID\n\n");
+    printf("                                                                [2] 书名\n\n");
+    printf("                                                                [3] 作者\n\n");
+    printf("                                                                [4] 出版社\n\n");
+    printf("                                                                [5] 分类\n\n");
+    printf("                                                                [6] 时间\n\n");
+    printf("                                                                [7] 已借出图书\n\n");
+    printf("                                                                [0] 返回\n\n");
     int method ;
     scanf("%d", &method);
 
@@ -556,16 +580,8 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
 
         while((pre && pre != the_BookLine_Rear) && --i >= 0)
         {
-            char nametem = pre->name[showlen];
-            pre->name[showlen] = '\0';
-            char authortem = pre->name[showlen];
-            pre->authou[showlen] = '\0';
-            char presstem = pre->name[showlen];
-            pre->press[showlen] = '\0';
-            printf("%-8d%-25s%-25s%-25s%-8.2f%-13s%-12s%-15s%-d/%d\n", pre->id, pre->name, pre->authou, pre->press, pre->price, pre->time, pre->classfiy, pre->ISBN, pre->numInLibrary, pre->numAll);
-            pre->name[showlen] = nametem;
-            pre->authou[showlen] = authortem;
-            pre->press[showlen] = presstem;
+            showBooksimple(pre);
+
             pre = pre->next;
 
         }
@@ -575,7 +591,7 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
             while(i--    )        //  |
                 printf("\n");//控制菜单位置
         printf("\n");
-        printf("[1]上一页 [2]下一页 [3]跳转 [4]退出          第 %d / %.0f 页\n", pageNow, ceil(1.0 * searchNum / itemInPage));
+        printf("[1]上一页 [2]下一页 [3]跳转 [4]书本详细信息  [0]退出          第 %d / %.0f 页\n", pageNow, ceil(1.0 * searchNum / itemInPage));
         int cmd;
         scanf("%d", &cmd);
         if(cmd == 1)
@@ -650,6 +666,23 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
 
         }
         if(cmd == 4)
+        {
+            int id;
+            printf("输入要查看的书本 ID :\n");
+            scanf("%d",&id);
+            book *t=findBookbyId(id);
+            if(t!=NULL)
+            {
+                showBookdetail(t);
+            }
+            else
+                {
+            printf("查询失败,回车继续\n");
+            getchar();
+            }
+        }
+
+        if(cmd == 0)
         {
             if(!isTheMianLine)
                 freenode_Book(thehead);

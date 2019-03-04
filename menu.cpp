@@ -16,14 +16,15 @@ void userMenu()//用户菜单
     system("cls");
     printf("==============================================================LibrarySystem Menu============================================================================\n");
     printf("当前共 %d 种书在馆\n", booksnum);
-    printf("                                                                [1] 浏览图书\n");
-    printf("                                                                [2] 搜索图书\n");
-    printf("                                                                [3] 借书\n");
-    printf("                                                                [4] 还书\n");
-    printf("                                                                [5] 借书记录\n");
-    printf("                                                                [6] 密码更改\n");
-    printf("                                                                [0] 登出\n");
+    printf("                                                                [1] 浏览图书\n\n");
+    printf("                                                                [2] 搜索图书\n\n");
+    printf("                                                                [3] 借书\n\n");
+    printf("                                                                [4] 还书\n\n");
+    printf("                                                                [5] 借书记录\n\n");
+    printf("                                                                [6] 密码更改\n\n");
+    printf("                                                                [0] 登出\n\n");
     int cmd;
+      book *tt;
     scanf("%d", &cmd);
     switch(cmd)
     {
@@ -34,7 +35,11 @@ void userMenu()//用户菜单
         querySomebooks();
         break;
     case 3:
-        user_LendBook();
+        int id;
+        printf("输入要借的书本 ID :\n");
+        scanf("%d", &id);
+        tt = findBookbyId(id);
+        user_LendBook(tt);
         break;
     case 4:
         user_ReturnBook();
@@ -57,10 +62,10 @@ void adminMenu()//管理员菜单
 
     system("cls");
     printf("==============================================================LibrarySystem Menu============================================================================\n");
-      printf("当前共 %d 种书在馆，%d位用户\n", booksnum, userSum);
-    printf("                                                                [1] 图书管理\n");
-    printf("                                                                [2] 用户管理\n");
-    printf("                                                                [0] 登出\n");
+    printf("当前共 %d 种书在馆，%d位用户\n", booksnum, userSum);
+    printf("                                                                [1] 图书管理\n\n");
+    printf("                                                                [2] 用户管理\n\n");
+    printf("                                                                [0] 登出\n\n");
     int cmd;
     scanf("%d", &cmd);
     switch(cmd)
@@ -80,16 +85,16 @@ void bookAdminMenu()
 {
     system("cls");
     printf("==============================================================LibrarySystem Menu============================================================================\n");
-    printf("当前共 %d 种书在馆\n", booksnum);
-    printf("                                                                [1] 浏览图书\n");
-    printf("                                                                [2] 搜索图书\n");
-    printf("                                                                [3] 增加单本图书\n");
-    printf("                                                                [4] 下架单本图书\n");//方法，整个链表重写
-    printf("                                                                [5] 按时间批量下架图书\n");
-    printf("                                                                [6] 修改图书信息\n");
-    printf("                                                                [7] 导入图书数据\n");
-    printf("                                                                [8] 导入失败，恢复数据\n");
-    printf("                                                                [0] 返回\n");
+    printf("当前共 %d 种书在馆\n\n", booksnum);
+    printf("                                                                [1] 浏览图书\n\n");
+    printf("                                                                [2] 搜索图书\n\n");
+    printf("                                                                [3] 增加单本图书\n\n");
+    printf("                                                                [4] 下架单本图书\n\n");//方法，整个链表重写
+    printf("                                                                [5] 按时间批量下架图书\n\n");
+    printf("                                                                [6] 修改图书信息\n\n");
+    printf("                                                                [7] 导入图书数据\n\n");
+    printf("                                                                [8] 导入失败，恢复数据\n\n");
+    printf("                                                                [0] 返回\n\n");
     int cmd;
     scanf("%d", &cmd);
     switch(cmd)
@@ -125,17 +130,17 @@ void bookAdminMenu()
 void userAdminMenu()//用户管理菜单
 {
     system("cls");
-     printf("==============================================================LibrarySystem Menu============================================================================\n");
-      printf("共 %d 位用户\n", userSum);
-    printf("                                                                [1] 浏览用户\n");
-    printf("                                                                [2] 搜索用户\n");
-    printf("                                                                [3] 用户借书记录\n");
-    printf("                                                                [4] 更改用户密码\n");
-    printf("                                                                [5] 注册用户\n");
-    printf("                                                                [6] 删除用户\n");
-    printf("                                                                [7] 批量注册用户\n");
-    printf("                                                                [8] 批量删除用户\n");
-    printf("                                                                [9] 用户权限更改\n");
+    printf("==============================================================LibrarySystem Menu============================================================================\n");
+    printf("共 %d 位用户\n", userSum);
+    printf("                                                                [1] 浏览用户\n\n");
+    printf("                                                                [2] 搜索用户\n\n");
+    printf("                                                                [3] 用户借书记录\n\n");
+    printf("                                                                [4] 更改用户密码\n\n");
+    printf("                                                                [5] 注册用户\n\n");
+    printf("                                                                [6] 删除用户\n\n");
+    printf("                                                                [7] 批量注册用户\n\n");
+    printf("                                                                [8] 批量删除用户\n\n");
+    printf("                                                                [9] 用户权限更改\n\n");
     printf("                                                                [0] 退出\n");
     int cmd;
     scanf("%d", &cmd);

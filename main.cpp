@@ -13,7 +13,6 @@ using namespace std;
 int main()
 {
     init();
-    //adminMenu();
     welcome();
 
 }

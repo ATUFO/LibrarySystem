@@ -1,3 +1,5 @@
+
+#include"book.h"
 #ifndef USER_H_INCLUDED
 #define USER_H_INCLUDED
 //用户
@@ -22,7 +24,7 @@ void user_Delete_Single();//单个删除
 void user_Regist_Batch();//批量注册用户
 void user_Delete_Batch();//批量删除用户
 void user_Permit();//提权
-void user_LendBook();//借书
+void user_LendBook(book *thebook);//借书
 void user_ReturnBook();//还书
 void showUsersList(user *thehead, int searchNum, bool isTheMianLine); //以链的方式显示列表
 void freenode_User(user *thehead);//释放节点
