@@ -32,11 +32,15 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="book.cpp" />
 		<Unit filename="book.h" />
 		<Unit filename="conf.h" />
 		<Unit filename="function.cpp" />
 		<Unit filename="function.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="menu.cpp" />
+		<Unit filename="menu.h" />
+		<Unit filename="user.cpp" />
 		<Unit filename="user.h" />
 		<Extensions>
 			<code_completion />

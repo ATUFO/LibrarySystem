@@ -8,7 +8,9 @@ typedef struct User
     int lendedBookId[10],lendNum;//landedbookid 为已借书的id   lendnum为已借图书数目
     User *before,*next;
 } user;
-#endif // USER_H_INCLUDED
+
+
+
 int login(char *name, char *pwd, int loginAsAdmin); //登陆
 void user_Query_Some();//模糊查询用户
 void regist();//注册
@@ -28,3 +30,5 @@ void queryAllUsers();//查询所有用户
 void rewriteAll_UserData();//将链表中所有数据重写入文件
 user *findUser(char *name);//按 唯一识别福 name 查找某用户再链表中的地址
 
+
+#endif // USER_H_INCLUDED

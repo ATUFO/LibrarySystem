@@ -6,14 +6,14 @@
 #include<math.h>
 #include"book.h"
 #include"user.h"
-#include"function.h"
-
+#include"init.h"
+#include"menu.h"
 using namespace std;
 
 int main()
 {
-    bookline_Init();
-    userline_Init();
+    init();
     //adminMenu();
     welcome();
+
 }

@@ -12,7 +12,6 @@ typedef struct b
     b *before, *next;
 } book;
 
-#endif // BOOK_H_INCLUDED
 
 void book_data_recover();
 void importbooks();
@@ -28,3 +27,6 @@ void showBookDetails(book *thebook);//输出数目详细信息
 void freenode_Book(book *thehead);//释放节点，配合模糊搜索
 
 void rewriteAll_BookData();//同上
+
+#endif // BOOK_H_INCLUDED
+
