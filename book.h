@@ -3,7 +3,7 @@
 //书本
 typedef struct b
 {
-    char name[40],ISBN[15],authou[25],press[20],time[15],classfiy[15],pos[20];
+    char name[100],ISBN[40],authou[100],press[100],time[15],classfiy[15];
     //ISBN 失效   press 出版社   time出版时间  classfiy分类
     int numAll,numInLibrary;//numAll 总共本数   numInlibrary在管图书数目
     int id;//图书id

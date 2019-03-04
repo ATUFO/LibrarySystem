@@ -402,8 +402,6 @@ void addbooks()//添加书
     cin >> t->time;
     printf("输入ISBN：\n");
     cin >> t->ISBN;
-    printf("输入图书位置：\n");
-    cin >> t->pos;
     printf("输入库存：\n");
     cin >> t->numAll;
     t->numInLibrary = t->numAll;
@@ -460,7 +458,7 @@ void user_LendBook()//借书
             {
                 if(userLogin->lendNum >= maxLandBookNum )   //用户最多借10本书
                 {
-                    printf("你不能再借更多的书了 \n");
+                    printf("你不能再借更多的书了\n");
                     getchar();
                     getchar();
                     userMenu();
@@ -614,8 +612,8 @@ void deletebooks_Batch()
 void showBookDetails(book* thebook)//输出书目详细信息
 {
     printf("==================================================================图书信息==================================================================\n");
-    printf("%-8s%-20s%-16s%-25s%-8s%-13s%-12s%-15s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "位置", "在馆/总计");
-    printf("%-8d%-20s%-16s%-25s%-8.2f%-13s%-12s%-15s%-15s%-d/%d\n", thebook->id, thebook->name, thebook->authou, thebook->press, thebook->price, thebook->time, thebook->classfiy, thebook->ISBN, thebook->pos, thebook->numInLibrary, thebook->numAll);
+    printf("%-8s%-20s%-16s%-25s%-8s%-13s%-12s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN",  "在馆/总计");
+    printf("%-8d%-20s%-16s%-25s%-8.2f%-13s%-12s%-15s%-d/%d\n", thebook->id, thebook->name, thebook->authou, thebook->press, thebook->price, thebook->time, thebook->classfiy, thebook->ISBN,  thebook->numInLibrary, thebook->numAll);
 
 }
 void rewriteAll_BookData()//数据文本重写
@@ -676,7 +674,7 @@ void importbooks()
         while(!feof(importfile))
         {
             cnt++;
-            fscanf(importfile, "%s%s%s%lf%s%s%d%s%s", bk.name, bk.authou, bk.press, &bk.price, bk.time, bk.classfiy, &bk.numAll, bk.ISBN, bk.pos);
+            fscanf(importfile, "%s%s%s%lf%s%s%s%d", bk.name, bk.authou, bk.press,&bk.price, bk.time,bk.classfiy, bk.ISBN, &bk.numAll);
             bk.numInLibrary = bk.numAll ;
             bk.id = ++id;
             fwrite(&bk, bookDataBlockSize, 1, data);
@@ -731,22 +729,26 @@ void querySomebooks()//模糊查询
 {
     //   查询方式 [0]id [1]书名 [2]作者 [3]出版社 [4]分类 [5]时间
     system("cls");
-    printf("搜索方式：\n [1] ID\n [2] 书名\n [3] 作者\n [4] 出版社\n [5] 分类\n [6] 时间\n\n[0] 返回\n");
+    printf("搜索方式：\n [1] ID\n [2] 书名\n [3] 作者\n [4] 出版社\n [5] 分类\n [6] 时间\n [7] 已借出图书\n\n[0] 返回\n");
     int method ;
     scanf("%d", &method);
 
     getchar();
-    int goal, isSearch = 0, searchedNum = 0;
-    char con[20];
-    printf("输入关键词\n");
-    book *queryHead = (book *)malloc(sizeof(book));
-    queryHead->next = NULL;
+    int goal, isSearch = 0, searchedNum = 0; char con[20];
     if(method == 0)
         isAdmin ? bookAdminMenu() : userMenu();
-    if(method == 1)
+    if(method!=7){
+         printf("输入关键词\n");
+          if(method == 1)
         scanf("%d", &goal);
     else
         scanf("%s", con); //int 和 string两种方式
+    }
+
+
+    book *queryHead = (book *)malloc(sizeof(book));
+    queryHead->next = NULL;
+
 
     book *pre = the_BookLine_Rear->before;
 
@@ -821,6 +823,15 @@ void querySomebooks()//模糊查询
                 t->next = queryHead->next;
                 queryHead->next = t;
             }
+        case 7:
+            if(pre->numAll-pre->numInLibrary>0){
+                isSearch=1;
+                searchedNum++;
+                book *t = (book *)malloc(sizeof(book));
+                *t = *pre;
+                t->next = queryHead->next;
+                queryHead->next = t;
+            }
             break;
         }
         pre = pre->before;
@@ -833,7 +844,7 @@ void querySomebooks()//模糊查询
     else
         printf("没有搜到\n");
     getchar();
-    getchar();
+
     isAdmin ? bookAdminMenu() : userMenu();
 
 }
@@ -857,11 +868,17 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
         system("cls");
         printf("==================================================================图书信息===============================================================\n");
         printf("共计%d种图书\n", searchNum);
-        printf("%-8s%-20s%-16s%-25s%-8s%-13s%-12s%-15s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "位置", "在馆/总计");
+        printf("%-8s%-25s%-25s%-25s%-8s%-13s%-12s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "在馆/总计");
 
         while((pre && pre != the_BookLine_Rear) && --i >= 0)
         {
-            printf("%-8d%-20s%-16s%-25s%-8.2f%-13s%-12s%-15s%-15s%-d/%d\n", pre->id, pre->name, pre->authou, pre->press, pre->price, pre->time, pre->classfiy, pre->ISBN, pre->pos, pre->numInLibrary, pre->numAll);
+            char nametem=pre->name[showlen];pre->name[showlen]='\0';
+            char authortem=pre->name[showlen];pre->authou[showlen]='\0';
+            char presstem=pre->name[showlen];pre->press[showlen]='\0';
+            printf("%-8d%-25s%-25s%-25s%-8.2f%-13s%-12s%-15s%-d/%d\n", pre->id, pre->name, pre->authou, pre->press, pre->price, pre->time, pre->classfiy, pre->ISBN, pre->numInLibrary, pre->numAll);
+            pre->name[showlen]=nametem;
+            pre->authou[showlen]=authortem;
+            pre->press[showlen]=presstem;
             pre = pre->next;
 
         }
