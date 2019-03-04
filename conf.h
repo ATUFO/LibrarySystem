@@ -8,4 +8,5 @@ int booksnum=0,id=0,userSum=0 ; //booksum为图书种数,usersum同  id为在库
 int isAdmin=0;             //isAdmin 当前登陆用户是否是管理员
 int itemInPage=20 ;        //每页显示的条目数量
 int maxLandBookNum=10;   //每个用户最多借书的本数
+int showlen=18;
 #endif // CONF_H_INCLUDED

@@ -402,8 +402,6 @@ void addbooks()//添加书
     cin >> t->time;
     printf("输入ISBN：\n");
     cin >> t->ISBN;
-    printf("输入图书位置：\n");
-    cin >> t->pos;
     printf("输入库存：\n");
     cin >> t->numAll;
     t->numInLibrary = t->numAll;
@@ -614,8 +612,8 @@ void deletebooks_Batch()
 void showBookDetails(book* thebook)//输出书目详细信息
 {
     printf("==================================================================图书信息==================================================================\n");
-    printf("%-8s%-20s%-16s%-25s%-8s%-13s%-12s%-15s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "位置", "在馆/总计");
-    printf("%-8d%-20s%-16s%-25s%-8.2f%-13s%-12s%-15s%-15s%-d/%d\n", thebook->id, thebook->name, thebook->authou, thebook->press, thebook->price, thebook->time, thebook->classfiy, thebook->ISBN, thebook->pos, thebook->numInLibrary, thebook->numAll);
+    printf("%-8s%-20s%-16s%-25s%-8s%-13s%-12s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN",  "在馆/总计");
+    printf("%-8d%-20s%-16s%-25s%-8.2f%-13s%-12s%-15s%-d/%d\n", thebook->id, thebook->name, thebook->authou, thebook->press, thebook->price, thebook->time, thebook->classfiy, thebook->ISBN,  thebook->numInLibrary, thebook->numAll);
 
 }
 void rewriteAll_BookData()//数据文本重写
@@ -676,7 +674,7 @@ void importbooks()
         while(!feof(importfile))
         {
             cnt++;
-            fscanf(importfile, "%s%s%s%lf%s%s%d%s%s", bk.name, bk.authou, bk.press, &bk.price, bk.time, bk.classfiy, &bk.numAll, bk.ISBN, bk.pos);
+            fscanf(importfile, "%s%s%s%lf%s%s%s%d", bk.name, bk.authou, bk.press,&bk.price, bk.time,bk.classfiy, bk.ISBN, &bk.numAll);
             bk.numInLibrary = bk.numAll ;
             bk.id = ++id;
             fwrite(&bk, bookDataBlockSize, 1, data);
@@ -870,11 +868,17 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
         system("cls");
         printf("==================================================================图书信息===============================================================\n");
         printf("共计%d种图书\n", searchNum);
-        printf("%-8s%-20s%-16s%-25s%-8s%-13s%-12s%-15s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "位置", "在馆/总计");
+        printf("%-8s%-25s%-25s%-25s%-8s%-13s%-12s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "在馆/总计");
 
         while((pre && pre != the_BookLine_Rear) && --i >= 0)
         {
-            printf("%-8d%-20s%-16s%-25s%-8.2f%-13s%-12s%-15s%-15s%-d/%d\n", pre->id, pre->name, pre->authou, pre->press, pre->price, pre->time, pre->classfiy, pre->ISBN, pre->pos, pre->numInLibrary, pre->numAll);
+            char nametem=pre->name[showlen];pre->name[showlen]='\0';
+            char authortem=pre->name[showlen];pre->authou[showlen]='\0';
+            char presstem=pre->name[showlen];pre->press[showlen]='\0';
+            printf("%-8d%-25s%-25s%-25s%-8.2f%-13s%-12s%-15s%-d/%d\n", pre->id, pre->name, pre->authou, pre->press, pre->price, pre->time, pre->classfiy, pre->ISBN, pre->numInLibrary, pre->numAll);
+            pre->name[showlen]=nametem;
+            pre->authou[showlen]=authortem;
+            pre->press[showlen]=presstem;
             pre = pre->next;
 
         }
