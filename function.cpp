@@ -7,6 +7,7 @@
 #include"book.h"
 #include"function.h"
 #include"user.h"
+#include"menu.h"
 #include"conf.h"
 using namespace std;
 //===================初始化===============================================
