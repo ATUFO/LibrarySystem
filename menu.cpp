@@ -24,7 +24,7 @@ void userMenu()//用户菜单
     printf("                                                                [6] 密码更改\n\n");
     printf("                                                                [0] 登出\n\n");
     int cmd;
-      book *tt;
+      book *tt;  int id;
     scanf("%d", &cmd);
     switch(cmd)
     {
@@ -35,14 +35,17 @@ void userMenu()//用户菜单
         querySomebooks();
         break;
     case 3:
-        int id;
+
         printf("输入要借的书本 ID :\n");
         scanf("%d", &id);
         tt = findBookbyId(id);
         user_LendBook(tt);
         break;
     case 4:
-        user_ReturnBook();
+        printf("输入归还的书本 ID :\n");
+        scanf("%d", &id);
+        tt = findBookbyId(id);
+        user_ReturnBook(tt);
         break;
     case 5:
         user_Lend_Book_Record(userLogin->name);
