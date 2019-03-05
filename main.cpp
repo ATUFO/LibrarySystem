@@ -12,7 +12,9 @@ using namespace std;
 
 int main()
 {
-    init();
-    welcome();
+    printf("%s",gettime());
+
+//    init();
+//    welcome();
 
 }

@@ -281,16 +281,16 @@ void showBooksimple(book* pre)//输出书目简略信息
 
     char nametem = pre->name[showlen];
     pre->name[showlen] = '\0';
-    char authortem = pre->name[showlen];
+    char authortem = pre->authou[showlen];
     pre->authou[showlen] = '\0';
-    char presstem = pre->name[showlen];
+    char presstem = pre->press[showlen];
     pre->press[showlen] = '\0';
     printf("%-8d%-25s%-25s%-25s%-8.2f%-13s%-12s%-18s%-d/%d\n", pre->id, pre->name, pre->authou, pre->press, pre->price, pre->time, pre->classfiy, pre->ISBN, pre->numInLibrary, pre->numAll);
     pre->name[showlen] = nametem;
     pre->authou[showlen] = authortem;
     pre->press[showlen] = presstem;
 }
-void showBookdetail(book *thebook)
+void showBookdetail(book *thebook)//输出书目详细信息
 {
     system("cls");
     printf("==============================================================书本详细信息============================================================================\n\n");
@@ -323,7 +323,7 @@ void queryAllbooks()//查询所有图书
 {
     showBooksList(the_BookLine_Head, booksnum, true);
 }
-void importbooks()
+void importbooks()//导入图书
 {
     system("cls");
     getchar();
@@ -385,7 +385,7 @@ void importbooks()
         bookAdminMenu();
     }
 }
-void book_data_recover()
+void book_data_recover()//恢复图书
 {
     FILE *backup = fopen("bookinfo.bak", "rb");
     if(backup == NULL)
@@ -416,7 +416,7 @@ void book_data_recover()
 
 }
 
-void querySomebooks()//模糊查询
+void querySomebooks()//搜索图书
 {
     //   查询方式 [0]id [1]书名 [2]作者 [3]出版社 [4]分类 [5]时间
     system("cls");

@@ -8,7 +8,7 @@
 #include"book.h"
 #include"init.h"
 #include"menu.h"
-
+#include<time.h>
 using namespace std;
 //===================初始化===============================================
 FILE *file;//
@@ -176,5 +176,17 @@ void userline_Init()//用户链表初始化
 
 }
 
+char * gettime(){
+ char *ti=(char *)malloc(sizeof(char)*20);
+ time_t rawtime;
+    struct tm *ptminfo;
+    time(&rawtime);
+    ptminfo = localtime(&rawtime);
+    sprintf(ti,"%02d-%02d-%02d %02d:%02d:%02d",
+            ptminfo->tm_year + 1900, ptminfo->tm_mon + 1, ptminfo->tm_mday,
+            ptminfo->tm_hour, ptminfo->tm_min, ptminfo->tm_sec);
+            //sprintf(ti,"dd");
+ return ti;
+}
 
 

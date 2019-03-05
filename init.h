@@ -2,6 +2,7 @@
 #define FUNCTION_H_INCLUDED
 #include"user.h"
 #include"book.h"
+//全局变量
 extern FILE *file;//
 extern char bookfile[];//文件存放位置
 extern char userfile[];
@@ -17,8 +18,12 @@ extern user * the_UserLine_Head;
 extern user * the_UserLine_Rear ;
 extern int bookDataBlockSize;//保存的单个图书数据块大小
 extern int userDataBlockSize;//同上
+
+
+//初始化函数
 void userline_Init();//用户链表初始化
 void bookline_Init();//初始化
 void init();
 void welcome();//欢迎界面
+char * gettime();
 #endif // FUNCTION_H_INCLUDED

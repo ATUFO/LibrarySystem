@@ -53,6 +53,157 @@ void regist()
 }
 
 
+void user_Regist_Batch()//批量注册用户
+{
+    system("cls");
+    int newUserNum, startNum;
+    printf("输入要添加的用户数目\n");
+    scanf("%d", &newUserNum);
+    printf("输入用户名前缀\n");
+    getchar();
+    char perName[6];
+    scanf("%s", perName);
+    printf("输入用户名后缀开始数字\n");
+    scanf("%d", &startNum);
+    file = fopen(userfile, "ab+");
+    for(int i = startNum; i < newUserNum + startNum; i++)
+    {
+        char name[16], last[10];
+        sprintf(last, "%06d", i);
+        strcpy(name, perName);
+        strcat(name, last);   //合成用户名
+        if(findUser(name))     //判断是否存在
+        {
+            system("cls");
+            printf("已存在，请更换前缀或后缀");
+            getchar();
+            getchar();
+            break;
+        }
+        //分配内存，并写入文件
+        user *newUser = (user *)malloc(sizeof(user));
+        strcpy(newUser->name, name);
+        strcpy(newUser->passWord, "1");
+        newUser->isAdminstrator = 0;
+        newUser->lendNum = 0;
+        newUser->next = the_UserLine_Head->next; //配置节点
+        the_UserLine_Head->next->before = newUser;
+        newUser->before = the_UserLine_Head;
+        the_UserLine_Head->next = newUser;
+        fwrite(newUser, userDataBlockSize, 1, file); //追加数据
+
+        userSum++;
+    }
+    fclose(file);
+    userAdminMenu();
+}
+void user_Delete_Single()
+{
+    system("cls");
+    printf("输入待删除用户的用户名：\n");
+    char name[16];
+    scanf("%s", &name);
+    getchar();
+    user* pre = the_UserLine_Head->next; //从首节点开始
+    while(pre)   //访问下下节点，因为当时是单链表，方便操作
+    {
+        if(!strcmp(pre->name, name))   //找到图书
+        {
+            if(pre->lendNum == 0)
+            {
+                //细节展示
+                printf("%-20s%-20s%-20s%-5s\n", "用户名", "密码", "管理员", "共借书");
+                printf("%-20s%-20s%-20s%-5d\n", pre->name, pre->passWord, pre->isAdminstrator ? "是" : " ", pre->lendNum);
+                printf("确认删除%s？[Y]/[N]\n", pre->name);
+                char t;
+                scanf("%c", &t);
+                if(t == 'Y')
+                {
+                    user *e = pre;
+                    pre->before->next = pre->next;
+                    pre->next->before = pre->before;
+                    free(e);//释放被删除的图书的内存
+                    rewriteAll_UserData();//重新写入所有节点
+                    userSum--;
+
+                    userAdminMenu();
+                }
+
+            }
+            else
+            {
+                printf("%s 还有书未还，删除失败\n", pre->name);
+                getchar();
+                userAdminMenu();
+            }
+
+        }
+
+        pre = pre->next;
+    }
+    printf("没有找到用户,按回车继续\n");
+    getchar();
+    userAdminMenu();
+
+}
+
+void user_Delete_Batch()
+{
+    system("cls");
+    int endNum, startNum;
+
+    printf("输入删除用户名前缀\n");
+    getchar();
+    char perName[6];
+    scanf("%s", perName);
+    printf("输入用户名后缀开始数字\n");
+    scanf("%d", &startNum);
+    printf("输入用户名后缀结束数字\n");
+    scanf("%d", &endNum);
+    int i, delNum = 0;
+    for(i = startNum; i <= endNum; i++)
+    {
+        char name[16], last[10];
+        sprintf(last, "%06d", i);
+        strcpy(name, perName);
+        strcat(name, last);
+        user *t;//=(user *)malloc( sizeof(user));
+        t = findUser(name);
+
+        if(t)
+        {
+            if(t->lendNum == 0)
+            {
+                delNum++;
+                t->before->next = t->next;
+                t->next->before = t->before;
+                free(t);
+                userSum--;
+            }
+            else
+            {
+                printf("%s 还有书未还，删除失败\n", t->name);
+            }
+        }
+        else
+        {
+            printf("%s 不存在，删除失败\n", name);
+            continue;
+
+        }
+    }
+
+
+    printf("共删除 %d 位用户\n", delNum);
+    getchar();
+    getchar();
+
+    rewriteAll_UserData();
+    userAdminMenu();
+
+}
+
+
 user * findUser(char *name)
 {
     user *pre = the_UserLine_Head->next;
@@ -84,19 +235,33 @@ void user_Query_Some()
         userAdminMenu();
     getchar();
     int goal, isSearch = 0, searchedNum = 0;
-    char con[20];
-    printf("输入关键词\n");
     user *queryHead = (user *)malloc(sizeof(user));
     queryHead->next = NULL;
-
-    if( method == 3)
-        scanf("%d", &goal);
-    else
+    char con[20];
+    if(method == 2)
+    {
+        printf("是否是管理员[Y]/[N]\n");
         scanf("%s", con); //int 和 string两种方式
-    if(con[0] == 'Y')
-        goal = 1;
+        if(con[0] == 'Y')
+            goal = 1;
+        else
+            goal = 0;
+    }
     else
-        goal = 0;
+    {
+        printf("输入关键词\n");
+        if( method == 3)
+            scanf("%d", &goal);
+        else
+            scanf("%s", con); //int 和 string两种方式
+        if(con[0] == 'Y')
+            goal = 1;
+        else
+            goal = 0;
+    }
+
+
+
     user *pre = the_UserLine_Rear->before;
 
     while(pre->before)
@@ -216,155 +381,6 @@ void user_Change_Password(char* name)
         getchar();
         isAdmin ? userAdminMenu() : userMenu();
     }
-
-}
-void user_Delete_Single()
-{
-    system("cls");
-    printf("输入待删除用户的用户名：\n");
-    char name[16];
-    scanf("%s", &name);
-    getchar();
-    user* pre = the_UserLine_Head->next; //从首节点开始
-    while(pre)   //访问下下节点，因为当时是单链表，方便操作
-    {
-        if(!strcmp(pre->name, name))   //找到图书
-        {
-            if(pre->lendNum == 0)
-            {
-                //细节展示
-                printf("%-20s%-20s%-20s%-5s\n", "用户名", "密码", "管理员", "共借书");
-                printf("%-20s%-20s%-20s%-5d\n", pre->name, pre->passWord, pre->isAdminstrator ? "是" : " ", pre->lendNum);
-                printf("确认删除%s？[Y]/[N]\n", pre->name);
-                char t;
-                scanf("%c", &t);
-                if(t == 'Y')
-                {
-                    user *e = pre;
-                    pre->before->next = pre->next;
-                    pre->next->before = pre->before;
-                    free(e);//释放被删除的图书的内存
-                    rewriteAll_UserData();//重新写入所有节点
-                    userSum--;
-
-                    userAdminMenu();
-                }
-
-            }
-            else
-            {
-                printf("%s 还有书未还，删除失败\n", pre->name);
-                getchar();
-                userAdminMenu();
-            }
-
-        }
-
-        pre = pre->next;
-    }
-    printf("没有找到用户,按回车继续\n");
-    getchar();
-    userAdminMenu();
-
-}
-
-void user_Regist_Batch()//批量注册用户
-{
-    system("cls");
-    int newUserNum, startNum;
-    printf("输入要添加的用户数目\n");
-    scanf("%d", &newUserNum);
-    printf("输入用户名前缀\n");
-    getchar();
-    char perName[6];
-    scanf("%s", perName);
-    printf("输入用户名后缀开始数字\n");
-    scanf("%d", &startNum);
-    file = fopen(userfile, "ab+");
-    for(int i = startNum; i < newUserNum + startNum; i++)
-    {
-        char name[16], last[10];
-        sprintf(last, "%06d", i);
-        strcpy(name, perName);
-        strcat(name, last);   //合成用户名
-        if(findUser(name))     //判断是否存在
-        {
-            system("cls");
-            printf("已存在，请更换前缀或后缀");
-            getchar();
-            getchar();
-            break;
-        }
-        //分配内存，并写入文件
-        user *newUser = (user *)malloc(sizeof(user));
-        strcpy(newUser->name, name);
-        strcpy(newUser->passWord, "1");
-        newUser->isAdminstrator = 0;
-        newUser->lendNum = 0;
-        newUser->next = the_UserLine_Head->next; //配置节点
-        the_UserLine_Head->next->before = newUser;
-        newUser->before = the_UserLine_Head;
-        the_UserLine_Head->next = newUser;
-        fwrite(newUser, userDataBlockSize, 1, file); //追加数据
-
-        userSum++;
-    }
-    fclose(file);
-    userAdminMenu();
-}
-void user_Delete_Batch()
-{
-    system("cls");
-    int endNum, startNum;
-
-    printf("输入删除用户名前缀\n");
-    getchar();
-    char perName[6];
-    scanf("%s", perName);
-    printf("输入用户名后缀开始数字\n");
-    scanf("%d", &startNum);
-    printf("输入用户名后缀结束数字\n");
-    scanf("%d", &endNum);
-    int i, delNum = 0;
-    for(i = startNum; i <= endNum; i++)
-    {
-        char name[16], last[10];
-        sprintf(last, "%06d", i);
-        strcpy(name, perName);
-        strcat(name, last);
-        user *t;//=(user *)malloc( sizeof(user));
-        t = findUser(name);
-
-        if(t)
-        {
-            if(t->lendNum == 0)
-            {
-                delNum++;
-                t->before->next = t->next;
-                t->next->before = t->before;
-                free(t);
-                userSum--;
-            }
-            else
-            {
-                printf("%s 还有书未还，删除失败\n", t->name);
-            }
-        }
-        else
-        {
-            printf("%s 不存在，删除失败\n", name);
-            continue;
-
-        }
-    }
-
-
-    printf("共删除 %d 位用户\n", delNum);
-    getchar();
-    getchar();
-
-    rewriteAll_UserData();
-    userAdminMenu();
 
 }
 
