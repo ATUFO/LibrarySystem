@@ -7,6 +7,7 @@
 #include"user.h"
 #include"book.h"
 #include"init.h"
+#include"record.h"
 #include"menu.h"
 using namespace std;
 void updatabooks()//更新书
@@ -138,6 +139,7 @@ void user_LendBook(book *thebook)//借书
                 theUser->lendedBookId[theUser->lendNum++] = goal->id;
                 goal->numInLibrary--;
                 printf("《%s》成功借出\n", goal->name);
+                addrecord(userLogin->name,goal->id,0);
                 rewriteAll_BookData();
                 rewriteAll_UserData();
                 getchar();
@@ -194,6 +196,7 @@ void user_ReturnBook(book *thebook)//还书
             printf("《%s》成功归还\n", goal->name);
             rewriteAll_BookData();
             rewriteAll_UserData();
+            addrecord(userLogin->name,goal->id,1);
             getchar();
             getchar();
 

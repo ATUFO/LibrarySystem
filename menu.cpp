@@ -68,6 +68,7 @@ void adminMenu()//管理员菜单
     printf("当前共 %d 种书在馆，%d位用户\n", booksnum, userSum);
     printf("                                                                [1] 图书管理\n\n");
     printf("                                                                [2] 用户管理\n\n");
+    printf("                                                                [3] 借阅记录\n\n");
     printf("                                                                [0] 登出\n\n");
     int cmd;
     scanf("%d", &cmd);
@@ -79,6 +80,9 @@ void adminMenu()//管理员菜单
     case 2:
         userAdminMenu();
         break;
+    case 3:
+         showRecordsList(the_RecordLine_Head,recordNum,true);
+         break;
     case 0:
         welcome();
 

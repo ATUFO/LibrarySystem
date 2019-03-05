@@ -14,18 +14,22 @@ using namespace std;
 FILE *file;//
 char bookfile[] = "bookinfo.data";
 char userfile[] = "userinfo.data";
+char recordfile[] = "record.data";
 int booksnum = 0, id = 0, userSum = 0  ;
 int isAdmin = 0;
 int itemInPage = 20;
 int maxLandBookNum = 10 ;
+int recordNum = 0;
 int showlen = 18;
 user * userLogin ;
 book * the_BookLine_Head ;
 book * the_BookLine_Rear ;
 user * the_UserLine_Head;
 user * the_UserLine_Rear ;
+record * the_RecordLine_Head;
 int bookDataBlockSize;
 int userDataBlockSize;
+int recordDataBlockSize;
 void init()
 {
 
@@ -34,7 +38,9 @@ void init()
     the_BookLine_Rear = (book *)malloc(sizeof(book)); //尾节点，实现双向链表
     the_UserLine_Head = (user *)malloc(sizeof(user));
     the_UserLine_Rear = (user *)malloc(sizeof(user));
+    the_RecordLine_Head = (record *)malloc(sizeof(record));
     bookline_Init();
+    record_line_init();
     userline_Init();
 }
 
@@ -175,18 +181,39 @@ void userline_Init()//用户链表初始化
 
 
 }
+void record_line_init()
+{
+    recordDataBlockSize = sizeof(record) - sizeof(record *);
+    the_RecordLine_Head->next = NULL;
 
-char * gettime(){
- char *ti=(char *)malloc(sizeof(char)*20);
- time_t rawtime;
+    file = fopen(recordfile, "rb+"); //打开文件
+
+    record *t = (record *)malloc(sizeof(record)); //临时的user用来保存每次读取的数据
+
+    while(fread(t,recordDataBlockSize, 1, file) != NULL)
+    {
+        record *node = (record *)malloc(sizeof(record ));
+        *node = *t;
+        node->next=the_RecordLine_Head->next;
+        the_RecordLine_Head->next=node;
+        recordNum++;
+    }
+    free(t);//释放临时user
+    fclose(file);//关闭流
+
+}
+char * gettime()
+{
+    char *ti = (char *)malloc(sizeof(char) * 20);
+    time_t rawtime;
     struct tm *ptminfo;
     time(&rawtime);
     ptminfo = localtime(&rawtime);
-    sprintf(ti,"%02d-%02d-%02d %02d:%02d:%02d",
+    sprintf(ti, "%02d-%02d-%02d %02d:%02d:%02d",
             ptminfo->tm_year + 1900, ptminfo->tm_mon + 1, ptminfo->tm_mday,
             ptminfo->tm_hour, ptminfo->tm_min, ptminfo->tm_sec);
-            //sprintf(ti,"dd");
- return ti;
+    //sprintf(ti,"dd");
+    return ti;
 }
 
 
