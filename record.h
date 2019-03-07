@@ -3,6 +3,7 @@
 
 typedef struct arecord
 {
+    int id;
     char userName[16];
     int bookID;
     char time[20];
