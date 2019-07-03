@@ -11,11 +11,13 @@
 #include<time.h>
 using namespace std;
 //===================初始化===============================================
-FILE *file;//
+
+
+FILE *file;//全局变量定义
 char bookfile[] = "bookinfo.data";
 char userfile[] = "userinfo.data";
 char recordfile[] = "record.data";
-int booksnum = 0, id = 0, userSum = 0  ;
+int booksnum = 0, id = 0, userNum = 0  ;
 int isAdmin = 0;
 int itemInPage = 20;
 int maxLandBookNum = 10 ;
@@ -30,7 +32,9 @@ record * the_RecordLine_Head;
 int bookDataBlockSize;
 int userDataBlockSize;
 int recordDataBlockSize;
-void init()
+
+
+void init()//初始化
 {
 
     userLogin = (user *)malloc(sizeof(user)); //已登陆的用户的地址
@@ -40,7 +44,7 @@ void init()
     the_UserLine_Rear = (user *)malloc(sizeof(user));
     the_RecordLine_Head = (record *)malloc(sizeof(record));
     bookline_Init();
-    record_line_init();
+    record_init();
     userline_Init();
 }
 
@@ -49,12 +53,13 @@ void welcome()//欢迎界面
 
     system("cls");
     isAdmin = 0;
-     printf("==========================================================================================================================================================================\n");
-    printf("                                                             图书管理系统 欢迎                                                                                                             \n");
+    printf("==========================================================================================================================================================================\n");
+    printf("                                                                图书管理系统 欢迎                                                                                                             \n");
     printf("==========================================================================================================================================================================\n\n");
-       printf("\n                                                                 [1] 用户登录\n\n");
+    printf("\n                                                                 [1] 用户登录\n\n");
     printf("                                                                 [2] 管理员登录\n\n");
     printf("                                                                 [3] 注册\n\n");
+    printf("                                                                 [0] 退出\n\n");
     int cmd;
     scanf("%d", &cmd);
     char name[16], pwd[16];
@@ -62,9 +67,9 @@ void welcome()//欢迎界面
     {
     case 1:
         system("cls");
-         printf("==========================================================================================================================================================================\n");
-    printf("                                                          图书管理系统 - 用户登陆                                                                                                              \n");
-    printf("==========================================================================================================================================================================\n\n");
+        printf("==========================================================================================================================================================================\n");
+        printf("                                                          图书管理系统 - 用户登陆                                                                                                              \n");
+        printf("==========================================================================================================================================================================\n\n");
         printf("输入账号\n");
         scanf("%s", name);
         printf("输入密码\n");
@@ -84,9 +89,9 @@ void welcome()//欢迎界面
         break;
     case 2:
         system("cls");
-          printf("==========================================================================================================================================================================\n");
-    printf("                                                          图书管理系统-管理员登陆                                                                                                             \n");
-    printf("==========================================================================================================================================================================\n\n");
+        printf("==========================================================================================================================================================================\n");
+        printf("                                                          图书管理系统-管理员登陆                                                                                                             \n");
+        printf("==========================================================================================================================================================================\n\n");
         printf("输入账号\n");
         scanf("%s", name);
         printf("输入密码\n");
@@ -108,9 +113,12 @@ void welcome()//欢迎界面
         regist();
         break;
 
+    case 0:
+        exit(0);
+    default :
+        welcome();
     }
 }
-
 void bookline_Init()//初始化
 {
     bookDataBlockSize = sizeof(book) - sizeof(book *) * 2; //去除struct  book  的before 与next 的大小
@@ -164,11 +172,11 @@ void userline_Init()//用户链表初始化
         the_UserLine_Head->next->before = node;
         the_UserLine_Head->next = node;
         node->before = the_UserLine_Head;
-        userSum++;
+        userNum++;
     }
     free(t);//释放临时user
     fclose(file);//关闭流
-    if(userSum == 0)
+    if(userNum == 0)
     {
         /*第一次创建管理员
                           账号密码都是2*/
@@ -182,12 +190,12 @@ void userline_Init()//用户链表初始化
         newUser->before = the_UserLine_Head;
         the_UserLine_Head->next = newUser;
         rewriteAll_UserData();
-        userSum++;
+        userNum++;
     }
 
 
 }
-void record_line_init()
+void record_init()
 {
     recordDataBlockSize = sizeof(record) - sizeof(record *);
     the_RecordLine_Head->next = NULL;
@@ -196,19 +204,19 @@ void record_line_init()
 
     record *t = (record *)malloc(sizeof(record)); //临时的user用来保存每次读取的数据
 
-    while(fread(t,recordDataBlockSize, 1, file) != NULL)
+    while(fread(t, recordDataBlockSize, 1, file) != NULL)
     {
         record *node = (record *)malloc(sizeof(record ));
         *node = *t;
-        node->next=the_RecordLine_Head->next;
-        the_RecordLine_Head->next=node;
+        node->next = the_RecordLine_Head->next;
+        the_RecordLine_Head->next = node;
         recordNum++;
     }
     free(t);//释放临时user
     fclose(file);//关闭流
 
 }
-char * gettime()
+char * getTime()
 {
     char *ti = (char *)malloc(sizeof(char) * 20);
     time_t rawtime;

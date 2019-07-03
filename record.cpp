@@ -18,8 +18,8 @@ void addrecord(char *userName, int bookid, int method)//增加记录
     strcpy(t->userName, userName);
     t->bookID = bookid;
     t->method = method;
-    t->id=++recordNum;
-    strcpy(t->time, gettime());
+    t->id = ++recordNum;
+    strcpy(t->time, getTime());
     FILE *rfile = fopen(recordfile, "ab+");
     fwrite(t, recordDataBlockSize, 1, rfile);
     fclose(rfile);
@@ -31,7 +31,7 @@ void showRecordsingle(record *record, int cnt)//单条显示
     strcpy(bookname, book ->name);
     char tem = bookname[showlen];
     bookname[showlen] = '\0';
-    printf("%-6d%-15s%-10s%-26s%-18d%-23s\n", cnt, record->userName, record->method ? "   还" : "借  ", bookname, book->id, record->time);
+    printf("%-14d%-18s%-18s%-35s%-18d%-25s\n", cnt, record->userName, record->method ? "   还" : "借  ", bookname, book->id, record->time);
     bookname[showlen] = tem;
 
 }
@@ -50,14 +50,14 @@ void showRecordsList(record *thehead, int searchNum, bool isTheMianLine) //以�
         record* pagefirtItem = pagestack.top(); //当前页第一个条目
         pre = pagefirtItem;
         system("cls");
-         printf("==========================================================================================================================================================================\n");
-    printf("                                                          图书管理系统-借书记录(总览)                                                                                                             \n");
-    printf("==========================================================================================================================================================================\n\n");
-         printf("共%d 条记录\n\n", searchNum);
-        printf("%-6s%-15s%-10s%-25s%-18s%-25s\n\n", "序号", "用户", "借/还", "书名", "书ID", "时间");
-        while(pre&& --i >= 0)
+        printf("==========================================================================================================================================================================\n");
+        printf("                                                          图书管理系统-借书记录(总览)                                                                                                             \n");
+        printf("==========================================================================================================================================================================\n\n");
+        printf("共%d 条记录\n\n", searchNum);
+        printf("%-14s%-18s%-18s%-35s%-18s%-25s\n\n", "序号", "用户", "借/还", "书名", "书ID", "时间");
+        while(pre && --i >= 0)
         {
-            showRecordsingle(pre,pre->id);
+            showRecordsingle(pre, pre->id);
             pre = pre->next;
         }
 
@@ -135,7 +135,6 @@ void showRecordsList(record *thehead, int searchNum, bool isTheMianLine) //以�
 
 
             }
-
 //================翻页菜单结束
 
         }
@@ -159,22 +158,13 @@ void showRecordsList(record *thehead, int searchNum, bool isTheMianLine) //以�
         if(cmd == 0)
         {
             //if(!isTheMianLine)
-                //freenode_Book(thehead);
-        adminMenu();
+            //freenode_Book(thehead);
+            adminMenu();
         }
 
     }
-
 }
-//void freenode_Record(record *thehead)//释放节点
-//{
-//
-//}
-//
-//void queryAllRecords()//查询所有
-//{
-//
-//}
+
 void rewriteAll_RecordData()//将链表中所有数据重写入文件
 {
 

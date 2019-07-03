@@ -11,8 +11,6 @@ typedef struct b
 
     b *before, *next;
 } book;
-
-
 void book_data_recover();
 void importbooks();
 void addbooks();//添加图书

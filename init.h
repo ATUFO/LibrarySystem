@@ -3,16 +3,16 @@
 #include"user.h"
 #include"book.h"
 #include "record.h"
-//全局变量
+//全局变量声明
 extern FILE *file;//
 extern char bookfile[];//文件存放位置
 extern char userfile[];
 extern char recordfile[];
-extern int booksnum,id,userSum; //booksum为图书种数,usersum同  id为在库图书的最大id（方便为新书分配id）
+extern int booksnum,id,userNum; //booksum为图书种数,usersum同  id为在库图书的最大id（方便为新书分配id）
 extern int isAdmin;             //isAdmin 当前登陆用户是否是管理员
 extern int itemInPage ;        //每页显示的条目数量
 extern int maxLandBookNum;   //每个用户最多借书的本数
-extern int recordNum;
+extern int recordNum;        //记录数目
 extern int showlen;
 extern user * userLogin ; //已登陆的用户的地址
 extern book * the_BookLine_Head ; //首节点
@@ -24,11 +24,12 @@ extern int bookDataBlockSize;//保存的单个图书数据块大小
 extern int userDataBlockSize;//同上
 extern int recordDataBlockSize;
 
+
 //初始化函数
 void userline_Init();//用户链表初始化
 void bookline_Init();//初始化
 void init();
-void record_line_init();
+void record_init();
 void welcome();//欢迎界面
-char * gettime();
+char * getTime();
 #endif // FUNCTION_H_INCLUDED

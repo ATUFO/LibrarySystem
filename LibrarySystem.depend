@@ -10,6 +10,8 @@
 	"user.h"
 	"function.h"
 
+1547276910 h"
+
 1550221982 source:d:\c\#mygameproject\librarysystem\function.cpp
 	<iostream>
 	<cstdio>
@@ -20,6 +22,8 @@
 	"book.h"
 	"function.h"
 	"user.h"
+
+1552307264 
 
 1547274243 d:\c\#mygameproject\librarysystem\book.h
 
@@ -42,20 +46,20 @@
 	"function.h"
 	"menu.h"
 
-1551962566 d:\c\#mygameproject\librarysystem\librarysystem\book.h
+1556766944 d:\c\#mygameproject\librarysystem\librarysystem\book.h
 
 1551702433 d:\c\#mygameproject\librarysystem\librarysystem\function.h
 	"user.h"
 	"book.h"
 
-1551962566 d:\c\#mygameproject\librarysystem\librarysystem\user.h
+1558315995 d:\c\#mygameproject\librarysystem\librarysystem\user.h
 	"book.h"
 
 1551702819 d:\c\#mygameproject\librarysystem\librarysystem\conf.h
 	"user.h"
 	"book.h"
 
-1551962566 source:d:\c\#mygameproject\librarysystem\librarysystem\main.cpp
+1552307067 source:d:\c\#mygameproject\librarysystem\librarysystem\main.cpp
 	<iostream>
 	<cstdio>
 	<windows.h>
@@ -67,7 +71,7 @@
 	"init.h"
 	"menu.h"
 
-1551963546 source:d:\c\#mygameproject\librarysystem\librarysystem\book.cpp
+1558317296 source:d:\c\#mygameproject\librarysystem\librarysystem\book.cpp
 	<iostream>
 	<cstdio>
 	<windows.h>
@@ -82,7 +86,7 @@
 
 1551962519 d:\c\#mygameproject\librarysystem\librarysystem\menu.h
 
-1551880627 source:d:\c\#mygameproject\librarysystem\librarysystem\user.cpp
+1553075484 source:d:\c\#mygameproject\librarysystem\librarysystem\user.cpp
 	<iostream>
 	<cstdio>
 	<windows.h>
@@ -94,7 +98,7 @@
 	"init.h"
 	"menu.h"
 
-1551880289 source:d:\c\#mygameproject\librarysystem\librarysystem\menu.cpp
+1552307067 source:d:\c\#mygameproject\librarysystem\librarysystem\menu.cpp
 	<iostream>
 	<cstdio>
 	<windows.h>
@@ -106,12 +110,12 @@
 	"init.h"
 	"menu.h"
 
-1551962566 d:\c\#mygameproject\librarysystem\librarysystem\init.h
+1552307067 d:\c\#mygameproject\librarysystem\librarysystem\init.h
 	"user.h"
 	"book.h"
 	"record.h"
 
-1551963207 source:d:\c\#mygameproject\librarysystem\librarysystem\init.cpp
+1552307067 source:d:\c\#mygameproject\librarysystem\librarysystem\init.cpp
 	<iostream>
 	<cstdio>
 	<windows.h>
@@ -126,7 +130,84 @@
 
 1551790912 d:\c\#mygameproject\librarysystem\librarysystem\record.h
 
-1551935882 source:d:\c\#mygameproject\librarysystem\librarysystem\record.cpp
+1558315995 source:d:\c\#mygameproject\librarysystem\librarysystem\record.cpp
+	<iostream>
+	<cstdio>
+	<windows.h>
+	<stdlib.h>
+	<stack>
+	<math.h>
+	"user.h"
+	"book.h"
+	"init.h"
+	"menu.h"
+	"record.h"
+
+1552368022 source:/run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/book.cpp
+	<iostream>
+	<cstdio>
+	<windows.h>
+	<stdlib.h>
+	<stack>
+	<math.h>
+	"user.h"
+	"book.h"
+	"init.h"
+	"record.h"
+	"menu.h"
+
+1556766944 /run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/user.h
+	"book.h"
+
+1556766944 /run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/book.h
+
+1552307067 /run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/init.h
+	"user.h"
+	"book.h"
+	"record.h"
+
+1551790912 /run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/record.h
+
+1551962519 /run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/menu.h
+
+1552307067 source:/run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/init.cpp
+	<iostream>
+	<cstdio>
+	<windows.h>
+	<stdlib.h>
+	<stack>
+	<math.h>
+	"user.h"
+	"book.h"
+	"init.h"
+	"menu.h"
+	<time.h>
+
+1552307067 source:/run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/main.cpp
+	<iostream>
+	<cstdio>
+	<windows.h>
+	<stdlib.h>
+	<stack>
+	<math.h>
+	"book.h"
+	"user.h"
+	"init.h"
+	"menu.h"
+
+1552307067 source:/run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/menu.cpp
+	<iostream>
+	<cstdio>
+	<windows.h>
+	<stdlib.h>
+	<stack>
+	<math.h>
+	"user.h"
+	"book.h"
+	"init.h"
+	"menu.h"
+
+1552307264 source:/run/media/taofu/Data/c/#MyGameProject/LibrarySystem/LibrarySystem/record.cpp
 	<iostream>
 	<cstdio>
 	<windows.h>

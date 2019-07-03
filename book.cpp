@@ -10,49 +10,152 @@
 #include"record.h"
 #include"menu.h"
 using namespace std;
-void updatabooks()//更新书
+void queryAllbooks()//查询所有图书
 {
+    showBooksList(the_BookLine_Head, booksnum, true);
+}
+
+
+void querySomebooks()//搜索图书
+{
+    //   查询方式 [0]id [1]书名 [2]作者 [3]出版社 [4]分类 [5]时间
     system("cls");
-
-    printf("输入待修改图书的id：\n");
-
-    int theid;
-    scanf("%d", &theid);
-    getchar();
-    book* pre = the_BookLine_Head->next; //从首节点开始
-    while(pre)   //访问下下节点，因为当时是单链表，方便操作
-    {
-        if(pre->id == theid)
-        {
-             printf("==========================================================================================================================================================================\n");
-    printf("                                                          图书管理系统 - 更新书本信息                                                                                                             \n");
+    printf("==========================================================================================================================================================================\n");
+    printf("                                                          图书管理系统 - 图书搜索                                                                                                             \n");
     printf("==========================================================================================================================================================================\n\n");
-       printf("%-8s%-20s%-20s%-20s\n", "ID", "书名", "作者", "ISBN");
-            printf("%-8d%-20s%-20s%-20s\n", pre->id, pre->name, pre->authou, pre->ISBN);
-            char q;
-            printf("是否更改 [Y]/[N] ?\n");
-            scanf("%c", &q);
-            if(q == 'Y')
-            {
-                printf("输入书名：\n");
-                cin >> pre->name;
-                printf("输入作者：\n");
-                cin >> pre->authou;
-                printf("输入价格：\n");
-                cin >> pre->price;
-                printf("分类：\n");
-                cin >> pre->classfiy;
-                printf("输入出版社：\n");
-                cin >> pre->press;
-                printf("输入出版时间：\n");
-                cin >> pre->time;
-                rewriteAll_BookData();//重新写入所有节点
-            }
-            bookAdminMenu();//返回
-        }
-        pre = pre->next;
+    printf("                                                      搜索方式：\n\n");
+    printf("                                                                [1] ID\n\n");
+    printf("                                                                [2] 书名\n\n");
+    printf("                                                                [3] 作者\n\n");
+    printf("                                                                [4] 出版社\n\n");
+    printf("                                                                [5] 分类\n\n");
+    printf("                                                                [6] 时间\n\n");
+    printf("                                                                [7] 已借出图书\n\n");
+    printf("                                                                [0] 返回\n\n");
+    int method ;
+    scanf("%d", &method);
+
+    getchar();
+    int goal, isSearch = 0, searchedNum = 0;
+    char con[20];
+    if(method == 0)
+        isAdmin ? bookAdminMenu() : userMenu();
+    if(method != 7)
+    {
+        printf("输入关键词\n");
+        if(method == 1)
+            scanf("%d", &goal);
+        else
+            scanf("%s", con); //int 和 string两种方式
     }
 
+
+    book *queryHead = (book *)malloc(sizeof(book));
+    queryHead->next = NULL;
+
+
+    book *pre = the_BookLine_Rear->before;
+    char *strFound;
+    int offset;
+    while(pre->before)
+    {
+        switch(method)
+        {
+        case 1:
+            if(goal == pre->id)
+            {
+                searchedNum++;
+                book *t = (book *)malloc(sizeof(book));
+                isSearch = 1;
+                *t = *pre;
+                t->next = queryHead->next;
+                queryHead->next = t;
+            }
+            break;
+        case 2:
+//            printf("%s  %s\n",pre->name,con);
+//由于汉字占两个字节，故不能直接调用strstr
+             strFound=strstr(pre->name, con);
+             offset=strFound-pre->name;
+
+            if(offset>=0&&offset%2==0)
+            {
+                isSearch = 1;
+                searchedNum++;
+                book *t = (book *)malloc(sizeof(book));
+                *t = *pre;
+                t->next = queryHead->next;
+                queryHead->next = t;
+            }
+            break;
+        case 3:
+            if(strstr(pre->authou, con))
+            {
+                isSearch = 1;
+                searchedNum++;
+                book *t = (book *)malloc(sizeof(book));
+                *t = *pre;
+                t->next = queryHead->next;
+                queryHead->next = t;
+            }
+            break;
+
+        case 4:
+            if(strstr(pre->press, con))
+            {
+                isSearch = 1;
+                searchedNum++;
+                book *t = (book *)malloc(sizeof(book));
+                *t = *pre;
+                t->next = queryHead->next;
+                queryHead->next = t;
+            }
+            break;
+        case 5:
+            if(strstr(pre->classfiy, con))
+            {
+                isSearch = 1;
+                searchedNum++;
+                book *t = (book *)malloc(sizeof(book));
+                *t = *pre;
+                t->next = queryHead->next;
+                queryHead->next = t;
+            }
+            break;
+        case 6:
+            if(strstr(pre->time, con))
+            {
+                isSearch = 1;
+                searchedNum++;
+                book *t = (book *)malloc(sizeof(book));
+                *t = *pre;
+                t->next = queryHead->next;
+                queryHead->next = t;
+            }
+        case 7:
+            if(pre->numAll - pre->numInLibrary > 0)
+            {
+                isSearch = 1;
+                searchedNum++;
+                book *t = (book *)malloc(sizeof(book));
+                *t = *pre;
+                t->next = queryHead->next;
+                queryHead->next = t;
+            }
+            break;
+        }
+        pre = pre->before;
+    }
+    if(isSearch)
+    {
+        showBooksList(queryHead, searchedNum, false);
+    }
+
+    else
+        printf("没有搜到\n");
+    getchar();
+
+    isAdmin ? bookAdminMenu() : userMenu();
 
 }
 
@@ -97,117 +200,53 @@ void addbooks()//添加书
     Sleep(1000);
     bookAdminMenu();
 }
-void user_LendBook(book *thebook)//借书
+
+void updatabooks()//更新书
 {
+    system("cls");
 
-    book *goal = thebook;
+    printf("输入待修改图书的id：\n");
 
-    if(goal == NULL)
+    int theid;
+    scanf("%d", &theid);
+    getchar();
+    book* pre = the_BookLine_Head->next; //从首节点开始
+    while(pre)   //访问下下节点，因为当时是单链表，方便操作
     {
-        printf("没有该书\n");
-        getchar();
-        getchar();
-        userMenu();
-    }
-    else
-    {
-        if(goal->numInLibrary == 0)
+        if(pre->id == theid)
         {
-            printf("已经借完了\n");
-            getchar();
-            getchar();
-            userMenu();
-        }
-        else
-        {
-            getchar();
-
-    printf("=====================================================图书信息=============================================================================================\n\n");
-               printf("%-8s%-25s%-25s%-25s%-8s%-13s%-12s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "在馆/总计");
-
-            showBooksimple(goal);
-            printf("是否借阅？[Y]/[N]\n");
-            char t;
-            scanf("%c", &t);
-            if(t == 'Y')
+            printf("==========================================================================================================================================================================\n");
+            printf("                                                          图书管理系统 - 更新书本信息                                                                                                             \n");
+            printf("==========================================================================================================================================================================\n\n");
+            printf("%-8s%-20s%-20s%-20s\n", "ID", "书名", "作者", "ISBN");
+            printf("%-8d%-20s%-20s%-20s\n", pre->id, pre->name, pre->authou, pre->ISBN);
+            char q;
+            printf("是否更改 [Y]/[N] ?\n");
+            scanf("%c", &q);
+            if(q == 'Y')
             {
-                if(userLogin->lendNum >= maxLandBookNum )   //用户最多借10本书
-                {
-                    printf("你不能再借更多的书了\n");
-                    getchar();
-                    getchar();
-                    userMenu();
-                }
-                user *theUser = findUser(userLogin->name);
-                theUser->lendedBookId[theUser->lendNum++] = goal->id;
-                goal->numInLibrary--;
-                printf("《%s》成功借出\n", goal->name);
-                addrecord(userLogin->name,goal->id,0);
-                rewriteAll_BookData();
-                rewriteAll_UserData();
-                getchar();
-                getchar();
-                userMenu();
+                printf("输入书名：\n");
+                cin >> pre->name;
+                printf("输入作者：\n");
+                cin >> pre->authou;
+                printf("输入价格：\n");
+                cin >> pre->price;
+                printf("分类：\n");
+                cin >> pre->classfiy;
+                printf("输入出版社：\n");
+                cin >> pre->press;
+                printf("输入出版时间：\n");
+                cin >> pre->time;
+                rewriteAll_BookData();//重新写入所有节点
             }
-            userMenu();
+            bookAdminMenu();//返回
         }
+        pre = pre->next;
     }
 
 
 }
 
-void user_ReturnBook(book *thebook)//还书
-{
-
-    book *goal = thebook;
-
-    if(goal == NULL)
-    {
-        printf("输入错误，或该书已下架\n");
-        getchar();
-        getchar();
-        isAdmin ? adminMenu() : userMenu();
-    }
-    else
-    {
-        int i = 1;
-        user *theUser = findUser(userLogin->name);
-        for( i = 0; i < 10; i++)
-        {
-            if(theUser->lendedBookId[i] == goal-> id)
-            {
-                theUser->lendedBookId[i] = 0;
-
-                for(int j = i; j < 9; j++)
-                {
-                    theUser->lendedBookId[j] = theUser->lendedBookId[j + 1];
-                }//数组移位  去 0 ；
-
-                theUser->lendNum--;
-                break;
-            }
-        }
-        if(i == 10)   //i==10时 意为没有找到该用户借过该书
-        {
-            printf("还书失败\n");
-            getchar();
-            getchar();
-        }
-        else
-        {
-            goal->numInLibrary++;
-            printf("《%s》成功归还\n", goal->name);
-            rewriteAll_BookData();
-            rewriteAll_UserData();
-            addrecord(userLogin->name,goal->id,1);
-            getchar();
-            getchar();
-
-        }
-
-    }
-    userMenu();
-}
 void deletebooks()//删除图书
 {
     system("cls");
@@ -282,61 +321,131 @@ void deletebooks_Batch()
     bookAdminMenu();
 
 }
-void showBooksimple(book* pre)//输出书目简略信息
+
+void user_LendBook(book *thebook)//借书
 {
 
-    char nametem = pre->name[showlen];
-    pre->name[showlen] = '\0';
-    char authortem = pre->authou[showlen];
-    pre->authou[showlen] = '\0';
-    char presstem = pre->press[showlen];
-    pre->press[showlen] = '\0';
-    printf("%-8d%-25s%-25s%-25s%-8.2f%-13s%-12s%-18s%-d/%d\n", pre->id, pre->name, pre->authou, pre->press, pre->price, pre->time, pre->classfiy, pre->ISBN, pre->numInLibrary, pre->numAll);
-    pre->name[showlen] = nametem;
-    pre->authou[showlen] = authortem;
-    pre->press[showlen] = presstem;
-}
-void showBookdetail(book *thebook)//输出书目详细信息
-{
-    system("cls");
-     printf("==========================================================================================================================================================================\n");
-    printf("                                                          图书管理系统 - 图书详细信息                                                                                                             \n");
-    printf("==========================================================================================================================================================================\n\n");
-       printf("                                                        书名：      《%s》\n\n", thebook->name);
-    printf("                                                        作者：      %s\n\n", thebook->authou);
-    printf("                                                        分类:       %s\n\n", thebook->classfiy);
-    printf("                                                        出版社：    %s\n\n", thebook->press);
-    printf("                                                        出版时间：  %s\n\n", thebook->time);
-    printf("                                                        ISBN:       %s\n\n", thebook->ISBN);
-    printf("                                                        价格：      %.2lf\n\n", thebook->price);
-    printf("                                                        在馆：  %d       馆藏数目：  %d\n", thebook->numInLibrary, thebook->numAll);
-    printf("回车返回\n");
-    getchar();
-    getchar();
-    return ;
-}
-void rewriteAll_BookData()//数据文本重写
-{
+    book *goal = thebook;
 
-    file = fopen(bookfile, "wb+");
-    book* pre = the_BookLine_Rear->before; //从尾节点开始，为了下次初始化时，最新添加的书在最上面
-    while(pre->before)
+    if(goal == NULL)
     {
-        fwrite(pre, bookDataBlockSize, 1, file);
-        pre = pre->before;
+        printf("没有该书\n");
+        getchar();
+        getchar();
+        userMenu();
     }
-    fclose(file);
+    else
+    {
+        if(goal->numInLibrary == 0)
+        {
+            printf("已经借完了\n");
+            getchar();
+            getchar();
+            userMenu();
+        }
+        else
+        {
+            getchar();
+
+            printf("=====================================================图书信息=============================================================================================\n\n");
+            printf("%-8s%-25s%-25s%-25s%-8s%-13s%-12s%-15s%-10s\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "在馆/总计");
+
+            showBooksimple(goal);
+            printf("是否借阅？[Y]/[N]\n");
+            char t;
+            scanf("%c", &t);
+            if(t == 'Y')
+            {
+                if(userLogin->lendNum >= maxLandBookNum )   //用户最多借10本书
+                {
+                    printf("你不能再借更多的书了\n");
+                    getchar();
+                    getchar();
+                    userMenu();
+                }
+                user *theUser = findUser(userLogin->name);
+                theUser->lendedBookId[theUser->lendNum++] = goal->id;
+                goal->numInLibrary--;
+                printf("《%s》成功借出\n", goal->name);
+                addrecord(userLogin->name, goal->id, 0);
+                rewriteAll_BookData();
+                rewriteAll_UserData();
+                getchar();
+                getchar();
+                userMenu();
+            }
+            userMenu();
+        }
+    }
+
+
 }
-void queryAllbooks()//查询所有图书
+
+void user_ReturnBook(book *thebook)//还书
 {
-    showBooksList(the_BookLine_Head, booksnum, true);
+
+    book *goal = thebook;
+
+    if(goal == NULL)
+    {
+        printf("输入错误，或该书已下架\n");
+        getchar();
+        getchar();
+        isAdmin ? adminMenu() : userMenu();
+    }
+//    if(goal->numAll==goal->numInLibrary){
+//        printf("输入错误，或该书已下架\n");
+//        getchar();
+//        getchar();
+//        isAdmin ? adminMenu() : userMenu();
+//    }
+    else
+    {
+        int i = 1;
+        user *theUser = findUser(userLogin->name);
+        for( i = 0; i < 10; i++)
+        {
+            if(theUser->lendedBookId[i] == goal-> id)
+            {
+                theUser->lendedBookId[i] = 0;
+
+                for(int j = i; j < 9; j++)
+                {
+                    theUser->lendedBookId[j] = theUser->lendedBookId[j + 1];
+                }//数组移位  去 0 ；
+
+                theUser->lendNum--;
+                break;
+            }
+        }
+        if(i == 10)   //i==10时 意为没有找到该用户借过该书
+        {
+            printf("还书失败\n");
+            getchar();
+            getchar();
+        }
+        else
+        {
+            goal->numInLibrary++;
+            printf("《%s》成功归还\n", goal->name);
+            rewriteAll_BookData();
+            rewriteAll_UserData();
+            addrecord(userLogin->name, goal->id, 1);
+            getchar();
+            getchar();
+
+        }
+
+    }
+    userMenu();
 }
+
 void importbooks()//导入图书
 {
     system("cls");
     getchar();
     printf("导入图书说明:\n");
-    printf(" 1.图书入库信息文件(bookimport.prn)通过 Excel 导出。\n");
+    printf(" 1.图书入库信息文件(bookimport.prn)通过 Excel 以  带格式文本(空格分隔).prn导出。注意其他位置不能有空格\n");
     printf(" 2.数据格式为[书名] [作者] [出版社] [价格] [出版日期] [分类] [ISBN][入库数目]   以空格分隔 \n");
     printf(" 3.将图书信息文件放在程序运行目录下\n");
     printf("\n\n是否导入？[Y]/[N]\n");
@@ -423,146 +532,8 @@ void book_data_recover()//恢复图书
     bookAdminMenu();
 
 }
-
-void querySomebooks()//搜索图书
-{
-    //   查询方式 [0]id [1]书名 [2]作者 [3]出版社 [4]分类 [5]时间
-    system("cls");
-     printf("==========================================================================================================================================================================\n");
-    printf("                                                          图书管理系统 - 图书搜索                                                                                                             \n");
-    printf("==========================================================================================================================================================================\n\n");
-       printf("                                                      搜索方式：\n\n");
-    printf("                                                                [1] ID\n\n");
-    printf("                                                                [2] 书名\n\n");
-    printf("                                                                [3] 作者\n\n");
-    printf("                                                                [4] 出版社\n\n");
-    printf("                                                                [5] 分类\n\n");
-    printf("                                                                [6] 时间\n\n");
-    printf("                                                                [7] 已借出图书\n\n");
-    printf("                                                                [0] 返回\n\n");
-    int method ;
-    scanf("%d", &method);
-
-    getchar();
-    int goal, isSearch = 0, searchedNum = 0;
-    char con[20];
-    if(method == 0)
-        isAdmin ? bookAdminMenu() : userMenu();
-    if(method != 7)
-    {
-        printf("输入关键词\n");
-        if(method == 1)
-            scanf("%d", &goal);
-        else
-            scanf("%s", con); //int 和 string两种方式
-    }
-
-
-    book *queryHead = (book *)malloc(sizeof(book));
-    queryHead->next = NULL;
-
-
-    book *pre = the_BookLine_Rear->before;
-
-    while(pre->before)
-    {
-        switch(method)
-        {
-        case 1:
-            if(goal == pre->id)
-            {
-                searchedNum++;
-                book *t = (book *)malloc(sizeof(book));
-                isSearch = 1;
-                *t = *pre;
-                t->next = queryHead->next;
-                queryHead->next = t;
-            }
-            break;
-        case 2:
-//            printf("%s  %s\n",pre->name,con);
-            if(strstr(pre->name, con))
-            {
-                isSearch = 1;
-                searchedNum++;
-                book *t = (book *)malloc(sizeof(book));
-                *t = *pre;
-                t->next = queryHead->next;
-                queryHead->next = t;
-            }
-            break;
-        case 3:
-            if(strstr(pre->authou, con))
-            {
-                isSearch = 1;
-                searchedNum++;
-                book *t = (book *)malloc(sizeof(book));
-                *t = *pre;
-                t->next = queryHead->next;
-                queryHead->next = t;
-            }
-            break;
-
-        case 4:
-            if(strstr(pre->press, con))
-            {
-                isSearch = 1;
-                searchedNum++;
-                book *t = (book *)malloc(sizeof(book));
-                *t = *pre;
-                t->next = queryHead->next;
-                queryHead->next = t;
-            }
-            break;
-        case 5:
-            if(strstr(pre->classfiy, con))
-            {
-                isSearch = 1;
-                searchedNum++;
-                book *t = (book *)malloc(sizeof(book));
-                *t = *pre;
-                t->next = queryHead->next;
-                queryHead->next = t;
-            }
-            break;
-        case 6:
-            if(strstr(pre->time, con))
-            {
-                isSearch = 1;
-                searchedNum++;
-                book *t = (book *)malloc(sizeof(book));
-                *t = *pre;
-                t->next = queryHead->next;
-                queryHead->next = t;
-            }
-        case 7:
-            if(pre->numAll - pre->numInLibrary > 0)
-            {
-                isSearch = 1;
-                searchedNum++;
-                book *t = (book *)malloc(sizeof(book));
-                *t = *pre;
-                t->next = queryHead->next;
-                queryHead->next = t;
-            }
-            break;
-        }
-        pre = pre->before;
-    }
-    if(isSearch)
-    {
-        showBooksList(queryHead, searchedNum, false);
-    }
-
-    else
-        printf("没有搜到\n");
-    getchar();
-
-    isAdmin ? bookAdminMenu() : userMenu();
-
-}
-
-void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书的列表
+//======================================辅助函数============================================
+void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书的列表 带翻页
 /*
 参数分别为  链表的头节点   列表的数目    是否是主链表，如果不是则在最后释放所有节点；
 */
@@ -580,10 +551,10 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
         pre = pagefirtItem;
 
         system("cls");
-         printf("==========================================================================================================================================================================\n");
-    printf("                                                          图书管理系统 - 图书信息                                                                                                             \n");
-    printf("==========================================================================================================================================================================\n\n");
-          printf("\n\n共计%d种图书\n\n", searchNum);
+        printf("==========================================================================================================================================================================\n");
+        printf("                                                          图书管理系统 - 图书信息                                                                                                             \n");
+        printf("==========================================================================================================================================================================\n\n");
+        printf("\n\n共计%d种图书\n\n", searchNum);
         printf("%-8s%-25s%-25s%-25s%-8s%-13s%-12s%-15s%-10s\n\n", "ID", "书名", "作者", "出版社", "价格", "出版时间", "分类", "ISBN", "在馆/总计");
 
         while((pre && pre != the_BookLine_Rear) && --i >= 0)
@@ -606,6 +577,7 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
         }
         else
             printf("[1]上一页 [2]下一页 [3]跳转 [4]书本详细信息   [0]退出          第 %d / %.0f 页\n", pageNow, ceil(1.0 * searchNum / itemInPage));
+
         int cmd;
         scanf("%d", &cmd);
         if(cmd == 1)
@@ -619,7 +591,7 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
         if(cmd == 2)
         {
 
-            printf("%x", pre);
+
 
             if(pre == NULL || pre == the_BookLine_Rear) //判断是否是最后一页
                 continue;
@@ -695,24 +667,25 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
                 getchar();
             }
         }
-        if(!isAdmin){
-             if(cmd == 5)
+        if(!isAdmin)
         {
+            if(cmd == 5)
+            {
 
-            int id;
-            printf("输入要借的书本 ID :\n");
-            scanf("%d", &id);
-            book* tt = findBookbyId(id);
-            user_LendBook(tt);
-        }
-        if(cmd == 6)
-        {
-            int id;
-            printf("输入要归还的书本 ID :\n");
-            scanf("%d", &id);
-            book* tt = findBookbyId(id);
-            user_ReturnBook(tt);
-        }
+                int id;
+                printf("输入要借的书本 ID :\n");
+                scanf("%d", &id);
+                book* tt = findBookbyId(id);
+                user_LendBook(tt);
+            }
+            if(cmd == 6)
+            {
+                int id;
+                printf("输入要归还的书本 ID :\n");
+                scanf("%d", &id);
+                book* tt = findBookbyId(id);
+                user_ReturnBook(tt);
+            }
         }
 
 
@@ -725,6 +698,55 @@ void showBooksList(book *thehead, int searchNum, bool isTheMianLine) //输出书
 
     }
 }
+
+
+void showBooksimple(book* pre)//输出书目简略信息
+{
+
+    char nametem = pre->name[showlen];
+    pre->name[showlen] = '\0';
+    char authortem = pre->authou[showlen];
+    pre->authou[showlen] = '\0';
+    char presstem = pre->press[showlen];
+    pre->press[showlen] = '\0';
+    printf("%-8d%-25s%-25s%-25s%-8.2f%-13s%-12s%-18s%-d/%d\n", pre->id, pre->name, pre->authou, pre->press, pre->price, pre->time, pre->classfiy, pre->ISBN, pre->numInLibrary, pre->numAll);
+    pre->name[showlen] = nametem;
+    pre->authou[showlen] = authortem;
+    pre->press[showlen] = presstem;
+}
+void showBookdetail(book *thebook)//输出书目详细信息
+{
+    system("cls");
+    printf("==========================================================================================================================================================================\n");
+    printf("                                                          图书管理系统 - 图书详细信息                                                                                                             \n");
+    printf("==========================================================================================================================================================================\n\n");
+    printf("                                                        书名：      《%s》\n\n", thebook->name);
+    printf("                                                        作者：      %s\n\n", thebook->authou);
+    printf("                                                        分类:       %s\n\n", thebook->classfiy);
+    printf("                                                        出版社：    %s\n\n", thebook->press);
+    printf("                                                        出版时间：  %s\n\n", thebook->time);
+    printf("                                                        ISBN:       %s\n\n", thebook->ISBN);
+    printf("                                                        价格：      %.2lf\n\n", thebook->price);
+    printf("                                                        在馆：  %d       馆藏数目：  %d\n", thebook->numInLibrary, thebook->numAll);
+    printf("回车返回\n");
+    getchar();
+    getchar();
+    return ;
+}
+void rewriteAll_BookData()//数据文本重写
+{
+
+    file = fopen(bookfile, "wb+");
+    book* pre = the_BookLine_Rear->before; //从尾节点开始，为了下次初始化时，最新添加的书在最上面
+    while(pre->before)
+    {
+        fwrite(pre, bookDataBlockSize, 1, file);
+        pre = pre->before;
+    }
+    fclose(file);
+}
+
+
 book *findBookbyId(int id)//按id寻找图书
 {
     book *pre = the_BookLine_Head->next;
@@ -738,7 +760,6 @@ book *findBookbyId(int id)//按id寻找图书
     return NULL;
 
 }
-
 
 void freenode_Book(book *thehead)//释放节点
 {

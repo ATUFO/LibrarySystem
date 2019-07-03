@@ -50,7 +50,7 @@ void regist()
     the_UserLine_Head->next = newUser;
     fwrite(newUser, userDataBlockSize, 1, file); //追加数据
     fclose(file);
-    userSum++;
+    userNum++;
     isAdmin ? userAdminMenu() : welcome();
 }
 
@@ -94,7 +94,7 @@ void user_Regist_Batch()//批量注册用户
         the_UserLine_Head->next = newUser;
         fwrite(newUser, userDataBlockSize, 1, file); //追加数据
 
-        userSum++;
+        userNum++;
     }
     fclose(file);
     userAdminMenu();
@@ -126,7 +126,7 @@ void user_Delete_Single()
                     pre->next->before = pre->before;
                     free(e);//释放被删除的图书的内存
                     rewriteAll_UserData();//重新写入所有节点
-                    userSum--;
+                    userNum--;
 
                     userAdminMenu();
                 }
@@ -180,7 +180,7 @@ void user_Delete_Batch()
                 t->before->next = t->next;
                 t->next->before = t->before;
                 free(t);
-                userSum--;
+                userNum--;
             }
             else
             {
@@ -206,20 +206,9 @@ void user_Delete_Batch()
 }
 
 
-user * findUser(char *name)
-{
-    user *pre = the_UserLine_Head->next;
-    while(pre->next)
-    {
-        if(!strcmp(pre->name, name))
-            return pre;
-        pre = pre->next;
-    }
-    return 0;
-}
 void queryAllUsers()
 {
-    showUsersList(the_UserLine_Head, userSum, true);
+    showUsersList(the_UserLine_Head, userNum, true);
 }
 void user_Query_Some()
 {
@@ -258,10 +247,6 @@ void user_Query_Some()
             scanf("%d", &goal);
         else
             scanf("%s", con); //int 和 string两种方式
-        if(con[0] == 'Y')
-            goal = 1;
-        else
-            goal = 0;
     }
 
 
@@ -300,10 +285,13 @@ void user_Query_Some()
 
         case 3://
             int flag = 0;
+
+           // printf("%d",goal);
             for(int i = 0; i < pre->lendNum; i++)
             {
                 if(pre->lendedBookId[i] == goal)
                 {
+
                     flag = 1;
                     break;
                 }
@@ -536,6 +524,19 @@ void freenode_User(user *thehead)
         free(t);
     }
     free(pre);
+}
+
+
+user * findUser(char *name)
+{
+    user *pre = the_UserLine_Head->next;
+    while(pre->next)
+    {
+        if(!strcmp(pre->name, name))
+            return pre;
+        pre = pre->next;
+    }
+    return 0;
 }
 
 
